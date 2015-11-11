@@ -35,8 +35,6 @@
 (define-key oakho-minor-mode-map (kbd "M-)") "}")
 (define-key oakho-minor-mode-map (kbd "M-°") "]")
 
-
-
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-r") 'align-regexp)
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-a") (lambda () (interactive)
                                                        (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)=" 1 1 nil)))

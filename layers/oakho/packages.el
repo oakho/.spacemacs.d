@@ -13,14 +13,32 @@
 ;; List of all packages to install and/or initialize. Built-in packages
 ;; which require an initialization must be listed explicitly in the list.
 (setq oakho-packages
-    '(
-      helm
-      tabbar
-      magit
-      ))
+      '(
+        company
+        helm
+        tabbar
+        magit
+        indent-guide
+        pretty-mode
+        projectile
+        (multiple-cursors :location (recipe :fetcher github :repo "magnars/multiple-cursors.el"))
+        redo+
+        web-mode
+        emmet-mode
+        ))
 
 ;; List of packages to exclude.
 (setq oakho-excluded-packages '())
+
+;; Company
+(defun oakho/pre-init-company ()
+  (use-package company
+    :config
+    (progn
+      (define-key company-active-map (kbd "M-n") nil)
+      (define-key company-active-map (kbd "M-p") nil)
+      (define-key company-active-map (kbd "C-n") #'company-select-next)
+      (define-key company-active-map (kbd "C-p") #'company-select-previous))))
 
 ;; Helm
 (defun oakho/pre-init-helm ()
@@ -79,9 +97,11 @@
       (defun tabbar-buffer-tab-label (tab)
         "Return a label for TAB.
 That is, a string used to represent it on the tab bar."
-        (let ((label (if tabbar--buffer-show-groups
-                         (format " [%s] " (tabbar-tab-tabset tab))
-                       (format " %s " (tabbar-tab-value tab)))))
+        (let ((label (cond
+                        (tabbar--buffer-show-groups (format " [%s] " (tabbar-tab-tabset tab)))
+                        ((tabbar-modified-p tab (tabbar-tab-tabset tab)) (format " •%s " (tabbar-tab-value tab)))
+                        (t (format " %s " (tabbar-tab-value tab)))
+                        )))
           ;; Unless the tab bar auto scrolls to keep the selected tab
           ;; visible, shorten the tab label to keep as many tabs as possible
           ;; in the visible area of the tab bar.
@@ -108,6 +128,63 @@ That is, a string used to represent it on the tab bar."
   (use-package magit
     :init
     (setq git-magit-status-fullscreen t)))
+
+;; Indent Guide
+(defun oakho/pre-init-indent-guide ()
+  (use-package indent-guide
+    :init
+    (indent-guide-global-mode t)))
+
+;; Multiple Cursors
+(defun oakho/init-multiple-cursors ()
+  (use-package multiple-cursors
+    :init
+    (progn
+      (global-set-key (kbd "s-d") 'mc/mark-next-like-this)
+      (global-set-key (kbd "s-D") 'mc/mark-previous-like-this))))
+
+;; Pretty Mode
+(defun oakho/init-pretty-mode ()
+  (use-package pretty-mode
+    :init
+    (global-pretty-mode t)))
+
+;; Projectile
+(defun oakho/pre-init-projectile ()
+  (use-package projectile
+    :config
+    (progn
+      (add-to-list 'projectile-globally-ignored-directories "elpa")
+      (add-to-list 'projectile-globally-ignored-directories ".cache")
+      (add-to-list 'projectile-globally-ignored-directories "node_modules")
+      (add-to-list 'projectile-globally-ignored-directories "bower_components")
+      (add-to-list 'projectile-globally-ignored-directories ".sass-cache"))))
+
+;; Redo+
+(defun oakho/init-redo+ ()
+  (use-package redo+
+    :config
+    (progn
+      (define-key oakho-minor-mode-map (kbd "s-z") 'undo)
+      (define-key oakho-minor-mode-map (kbd "s-Z") 'redo))))
+
+;; WebMode
+(defun oakho/web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+(defun oakho/pre-init-web-mode ()
+  (use-package web-mode
+    :config
+    (add-hook 'web-mode-hook  'oakho/web-mode-hook)))
+
+;; (defun oakho/pre-init-emmet-mode ()
+;;   (use-package emmet-mode
+;;     :config
+;;     (define-key emmet-mode-keymap [C-tab] 'emmet-expand-line)))
 
 ;;
 ;; Often the body of an initialize function uses `use-package'

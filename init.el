@@ -24,7 +24,11 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      oakho
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'complete
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-private-snippets-directory nil)
      ;; better-defaults
      emacs-lisp
      git
@@ -54,6 +58,7 @@ values."
      (colors :variables colors-enable-nyan-cat-progress-bar t)
      erc
      )
+
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
@@ -198,6 +203,10 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; Delete whitespace while saving buffer. Possible values are `all',
+   ;; `trailing', `changed' or `nil'. Default is `changed' (cleanup whitespace
+   ;; on changed lines) (default 'changed)
+   dotspacemacs-whitespace-cleanup 'all
    ))
 
 (defun dotspacemacs/user-init ()
@@ -215,17 +224,41 @@ layers configuration. You are free to put any user code."
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
 
+  (delete-selection-mode t)
+
   (golden-ratio-mode t)
 
+  (global-whitespace-mode t)
+  (set-face-attribute 'whitespace-space nil :background nil :foreground "gray30")
+  (set-face-attribute 'whitespace-newline nil :background nil :foreground "gray30")
 
-
-  (setq magit-restore-window-configuration t) ; that's the default actually
-  ;; (setq magit-status-buffer-switch-function
-  ;;       (lambda (buffer) ; there might already be an Emacs function which does this
-  ;;         (pop-to-buffer buffer)
-  ;;         (delete-other-windows)))
+  (setq projectile-completion-system 'helm)
 
   (linum-mode nil))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil))))
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(tabbar-button ((t (:box (:line-width 1 :color "gray20" :style nil)))))
+ '(tabbar-default ((t (:background "gray20" :foregroun@d "gray20" :box (:line-width 1 :color "gray20" :style nil)))))
+ '(tabbar-highlight ((t (:background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil)))))
+ '(tabbar-modified ((t (:inherit tabbar-default :background "gray30" :foreground "#7ec0ee"))))
+ '(tabbar-selected ((t (:background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
+ '(tabbar-separator ((t (:background "#2e3434" :height 0.6))))
+ '(tabbar-unselected ((t (:background "gray30" :foreground "white")))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(whitespace-style
+   (quote
+    (face trailing tabs empty space-after-tab space-before-tab tab-mark))))
