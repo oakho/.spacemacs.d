@@ -96,7 +96,7 @@
 There are two groups: Emacs buffers (those whose name starts with '*', plus
 dired buffers), and the rest.  This works at least with Emacs v24.2 using
 tabbar.el v1.7."
-  (list (cond ((string-equal "*magit" (substring (buffer-name) 0 6)) "user")
+  (list (cond ((string-equal "*m" (substring (buffer-name) 0 2)) "user")
               ((string-equal "*" (substring (buffer-name) 0 1)) "emacs")
               ((string-equal "#" (substring (buffer-name) 0 1)) "erc")
               ((eq major-mode 'dired-mode) "emacs")
