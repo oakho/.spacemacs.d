@@ -25,6 +25,7 @@
         redo+
         web-mode
         emmet-mode
+        smart-tab
         ))
 
 ;; List of packages to exclude.
@@ -180,6 +181,29 @@ That is, a string used to represent it on the tab bar."
   (use-package web-mode
     :config
     (add-hook 'web-mode-hook  'oakho/web-mode-hook)))
+
+;; Smart Tab
+(defun oakho/init-smart-tab ()
+  (use-package smart-tab
+    :config
+    (progn
+      (spacemacs|diminish smart-tab-mode " S" " s")
+      (global-smart-tab-mode 1))))
+
+(defun oakho/post-init-emmet-mode ()
+  (use-package emmet-mode
+    :defer t
+    :config
+    (progn
+      (evil-define-key 'insert emmet-mode-keymap (kbd "C-TAB") 'emmet-expand-yas)
+      (evil-define-key 'insert emmet-mode-keymap (kbd "C-<tab>") 'emmet-expand-yas)
+      (evil-define-key 'emacs emmet-mode-keymap (kbd "C-TAB") 'emmet-expand-yas)
+      (evil-define-key 'emacs emmet-mode-keymap (kbd "C-<tab>") 'emmet-expand-yas)
+
+      (evil-define-key 'insert emmet-mode-keymap (kbd "TAB") 'smart-tab)
+      (evil-define-key 'insert emmet-mode-keymap (kbd "<tab>") 'smart-tab)
+      (evil-define-key 'emacs emmet-mode-keymap (kbd "TAB") 'smart-tab)
+      (evil-define-key 'emacs emmet-mode-keymap (kbd "<tab>") 'smart-tab))))
 
 ;; (defun oakho/pre-init-emmet-mode ()
 ;;   (use-package emmet-mode
