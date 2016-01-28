@@ -182,33 +182,10 @@ That is, a string used to represent it on the tab bar."
     :config
     (add-hook 'web-mode-hook  'oakho/web-mode-hook)))
 
-;; Smart Tab
-(defun oakho/init-smart-tab ()
-  (use-package smart-tab
-    :config
-    (progn
-      (spacemacs|diminish smart-tab-mode " S" " s")
-      (global-smart-tab-mode 1))))
-
-(defun oakho/post-init-emmet-mode ()
+(defun oakho/pre-init-emmet-mode ()
   (use-package emmet-mode
-    :defer t
     :config
-    (progn
-      (evil-define-key 'insert emmet-mode-keymap (kbd "C-TAB") 'emmet-expand-yas)
-      (evil-define-key 'insert emmet-mode-keymap (kbd "C-<tab>") 'emmet-expand-yas)
-      (evil-define-key 'emacs emmet-mode-keymap (kbd "C-TAB") 'emmet-expand-yas)
-      (evil-define-key 'emacs emmet-mode-keymap (kbd "C-<tab>") 'emmet-expand-yas)
-
-      (evil-define-key 'insert emmet-mode-keymap (kbd "TAB") 'smart-tab)
-      (evil-define-key 'insert emmet-mode-keymap (kbd "<tab>") 'smart-tab)
-      (evil-define-key 'emacs emmet-mode-keymap (kbd "TAB") 'smart-tab)
-      (evil-define-key 'emacs emmet-mode-keymap (kbd "<tab>") 'smart-tab))))
-
-;; (defun oakho/pre-init-emmet-mode ()
-;;   (use-package emmet-mode
-;;     :config
-;;     (define-key emmet-mode-keymap [C-tab] 'emmet-expand-line)))
+    (define-key emmet-mode-keymap [C-tab] 'emmet-expand-line)))
 
 ;;
 ;; Often the body of an initialize function uses `use-package'
