@@ -26,6 +26,7 @@
         web-mode
         emmet-mode
         smart-tab
+        cssfmt
         ))
 
 ;; List of packages to exclude.
@@ -39,7 +40,8 @@
       (define-key company-active-map (kbd "M-n") nil)
       (define-key company-active-map (kbd "M-p") nil)
       (define-key company-active-map (kbd "C-n") #'company-select-next)
-      (define-key company-active-map (kbd "C-p") #'company-select-previous))))
+      (define-key company-active-map (kbd "C-p") #'company-select-previous)
+      (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle))))
 
 ;; Helm
 (defun oakho/pre-init-helm ()
@@ -186,6 +188,29 @@ That is, a string used to represent it on the tab bar."
   (use-package emmet-mode
     :config
     (define-key emmet-mode-keymap [C-tab] 'emmet-expand-line)))
+
+
+;; CSSfmt
+(defun oakho/init-cssfmt ()
+  "Hooks for CSSfmt."
+  (use-package cssfmt
+    :config
+    ))
+
+(with-eval-after-load 'css-mode
+  (add-hook 'after-save-hook 'cssfmt-enable-on-save)
+  (define-key css-mode-map (kbd "s-P") 'helm-css-scss))
+
+;; Crux
+(defun oakho/init-crux ()
+  "Hooks for CSSfmt."
+  (use-package crux
+    :config
+    (progn
+      (crux-with-region-or-buffer indent-region)
+      (crux-with-region-or-buffer untabify)
+      (crux-with-region-or-line comment-or-uncomment-region)
+      )))
 
 ;;
 ;; Often the body of an initialize function uses `use-package'
