@@ -21,13 +21,10 @@
         indent-guide
         pretty-mode
         projectile
-        (multiple-cursors :location (recipe :fetcher github :repo "magnars/multiple-cursors.el"))
-        redo+
         web-mode
         emmet-mode
-        smart-tab
-        cssfmt
-        ))
+        key-chord
+        crux))
 
 ;; List of packages to exclude.
 (setq oakho-excluded-packages '())
@@ -138,14 +135,6 @@ That is, a string used to represent it on the tab bar."
     :init
     (indent-guide-global-mode t)))
 
-;; Multiple Cursors
-(defun oakho/init-multiple-cursors ()
-  (use-package multiple-cursors
-    :init
-    (progn
-      (global-set-key (kbd "s-d") 'mc/mark-next-like-this)
-      (global-set-key (kbd "s-D") 'mc/mark-previous-like-this))))
-
 ;; Pretty Mode
 (defun oakho/init-pretty-mode ()
   (use-package pretty-mode
@@ -163,17 +152,9 @@ That is, a string used to represent it on the tab bar."
       (add-to-list 'projectile-globally-ignored-directories "bower_components")
       (add-to-list 'projectile-globally-ignored-directories ".sass-cache"))))
 
-;; Redo+
-(defun oakho/init-redo+ ()
-  (use-package redo+
-    :config
-    (progn
-      (define-key oakho-minor-mode-map (kbd "s-z") 'undo)
-      (define-key oakho-minor-mode-map (kbd "s-Z") 'redo))))
-
 ;; WebMode
 (defun oakho/web-mode-hook ()
-  "Hooks for Web mode."
+  "Hooks for Web mode"
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
@@ -189,29 +170,33 @@ That is, a string used to represent it on the tab bar."
     :config
     (define-key emmet-mode-keymap [C-tab] 'emmet-expand-line)))
 
-
 ;; CSSfmt
-(defun oakho/init-cssfmt ()
-  "Hooks for CSSfmt."
-  (use-package cssfmt
+(defun oakho/init-ember-mode ()
+  "Hooks for ember-mode"
+  (use-package ember-mode
     :config
-    ))
+    (progn
+      (add-hook 'js-mode-hook (lambda () (ember-mode t)))
+      (add-hook 'web-mode-hook (lambda () (ember-mode t))))))
 
 (with-eval-after-load 'css-mode
-  (add-hook 'after-save-hook 'cssfmt-enable-on-save)
   (define-key css-mode-map (kbd "s-P") 'helm-css-scss))
+
+;; Key-chord
+(defun oakho/init-key-chord ()
+  "Hooks for key-chord"
+  (use-package key-chord
+    :config))
 
 ;; Crux
 (defun oakho/init-crux ()
-  "Hooks for CSSfmt."
+  "Hooks for crux"
   (use-package crux
     :config
     (progn
       (crux-with-region-or-buffer indent-region)
       (crux-with-region-or-buffer untabify)
-      (crux-with-region-or-line comment-or-uncomment-region)
-      )))
-
+      (crux-with-region-or-line comment-or-uncomment-region))))
 ;;
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:

@@ -35,3 +35,11 @@ tramp
 
 # cask packages
 .cask/
+
+=
+Cask::Installer#fetch
+Cask::Installer#install
+Downloading==
+Printing
+Satisfying
+.spacemacs.env
