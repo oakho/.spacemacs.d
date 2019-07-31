@@ -63,7 +63,7 @@ values."
      spell-checking
      syntax-checking
      github
-     treemacs
+     neotree
      (version-control :variables
                       version-control-diff-tool 'git-gutter
                       version-control-diff-side 'left
@@ -298,7 +298,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(monokai)
+   dotspacemacs-themes '(doom-vibrant)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -449,8 +449,28 @@ layers configuration. You are free to put any user code."
 
   (setq comment-multi-line t)
 
+  (spacemacs/toggle-line-numbers-on)
+
+  (add-hook 'prog-mode-hook 'spacemacs/toggle-line-numbers-on)
+
+  (set-face-foreground 'indent-guide-face "#61676d")
+
   (setq magit-repository-directories
         '(("~/Projects/" . 2)))
+
+  ;; For obscure reason this line doesnt override the variables in the oakho layer
+  (setq tabbar-tab-label-function 'oakho/tabbar-display-tab)
+
+  ;; Enable flashing mode-line on errors
+  ;; (doom-themes-visual-bell-config)
+
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  ;; (doom-themes-treemacs-config)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
 
   (setq projectile-completion-system 'helm))
 
@@ -478,16 +498,18 @@ This function is called at the very end of Spacemacs initialization."
      (quote
       (face trailing tabs empty space-after-tab space-before-tab tab-mark))))
   (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(default ((t (:background nil))))
-   '(tabbar-button ((t (:box (:line-width 5 :color "gray20" :style nil)))))
-   '(tabbar-default ((t (:background "gray20" :foregroun@d "gray20" :box (:line-width 5 :color "gray20" :style nil)))))
-   '(tabbar-highlight ((t (:background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil)))))
-   '(tabbar-modified ((t (:inherit tabbar-default :background "gray30" :foreground "#7ec0ee" :box (:line-width 5 :color "gray30" :style nil)))))
-   '(tabbar-selected ((t (:background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
-   '(tabbar-selected-modified ((t (:inherit tabbar-default :background "gray75" :foreground "#507C9A" :box (:line-width 5 :color "gray75" :style nil)))))
-   '(tabbar-separator ((t (:background "#2e3434" :height 0.6))))
-   '(tabbar-unselected ((t (:background "gray30" :foreground "white"))))))
+  ;;  ;; custom-set-faces was added by Custom.
+  ;;  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;;  ;; Your init file should contain only one such instance.
+  ;;  ;; If there is more than one, they won't work right.
+  ;;  '(default ((t (:background nil))))
+  ;;  '(tabbar-button ((t (:box (:line-width 5 :color "gray20" :style nil)))))
+  ;;  '(tabbar-default ((t (:background "gray20" :foregroun@d "gray20" :box (:line-width 5 :color "gray20" :style nil)))))
+  ;;  '(tabbar-highlight ((t (:background "white" :foreground "black" :underline nil :box (:line-width 5 :color "white" :style nil)))))
+  ;;  '(tabbar-modified ((t (:inherit tabbar-default :background "gray30" :foreground "#7ec0ee" :box (:line-width 5 :color "gray30" :style nil)))))
+  ;;  '(tabbar-selected ((t (:background "gray75" :foreground "black" :box (:line-width 5 :color "gray75" :style nil)))))
+  ;;  '(tabbar-selected-modified ((t (:inherit tabbar-default :background "gray75" :foreground "#507C9A" :box (:line-width 5 :color "gray75" :style nil)))))
+  ;;  '(tabbar-separator ((t (:background "#2e3434" :height 0.6))))
+  ;;  '(tabbar-unselected ((t (:background "gray30" :foreground "white")))))
+   '(indent-guide-face ((t (:foreground "#61676d")))))
+  )

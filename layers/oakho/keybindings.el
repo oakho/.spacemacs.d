@@ -44,7 +44,8 @@
 
 
 ;; Go to line (with Feedback)
-(define-key oakho-minor-mode-map (kbd "s-l") 'oakho/goto-line-with-feedback)
+;; (define-key oakho-minor-mode-map (kbd "s-l") 'oakho/goto-line-with-feedback)
+(define-key oakho-minor-mode-map (kbd "s-l") 'goto-line)
 (define-key oakho-minor-mode-map (kbd "<C-s-268632076>") 'spacemacs/toggle-line-numbers)
 
 ;; Indentation

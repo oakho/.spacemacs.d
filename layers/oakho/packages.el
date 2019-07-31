@@ -112,6 +112,8 @@ That is, a string used to represent it on the tab bar."
                              (length (tabbar-view
                                       (tabbar-current-tabset)))))))))
 
+      (setq tabbar-tab-label-function 'oakho/tabbar-display-tab)
+
       (tabbar-mode t))))
 
 ;; ERC
@@ -134,6 +136,11 @@ That is, a string used to represent it on the tab bar."
   (use-package indent-guide
     :init
     (indent-guide-global-mode t)))
+
+(with-eval-after-load 'indent-guide
+  (when (boundp 'indent-guide-inhibit-modes)
+   ;; fix for crash on home page
+   (push 'spacemacs-buffer-mode indent-guide-inhibit-modes)))
 
 ;; Pretty Mode
 (defun oakho/init-pretty-mode ()
@@ -197,6 +204,7 @@ That is, a string used to represent it on the tab bar."
       (crux-with-region-or-buffer indent-region)
       (crux-with-region-or-buffer untabify)
       (crux-with-region-or-line comment-or-uncomment-region))))
+;;
 ;;
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
