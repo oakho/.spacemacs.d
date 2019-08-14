@@ -26,6 +26,10 @@
 (define-key oakho-minor-mode-map (kbd "C-c C-p") 'beginning-of-buffer)
 (define-key oakho-minor-mode-map (kbd "C-c C-n") 'end-of-buffer)
 
+;; Quotes
+(define-key oakho-minor-mode-map (kbd "C-'") 'oakho/toggle-quotes)
+(define-key oakho-minor-mode-map (kbd "C-\"") 'oakho/toggle-quotes)
+
 ;; French Keyboards
 (define-key oakho-minor-mode-map (kbd "M-L") "|")
 (define-key oakho-minor-mode-map (kbd "M-n") "~")
@@ -38,9 +42,9 @@
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-r") 'align-regexp)
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-a") (lambda () (interactive)
                                                        (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)=" 1 1 nil)))
-(key-chord-define-global "AA" 'align-regexp)
-(key-chord-define-global "aa" (lambda () (interactive)
-                                (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)  =" 1 1 nil)))
+;; (key-chord-define-global "AA" 'align-regexp)
+;; (key-chord-define-global "aa" (lambda () (interactive)
+;;                                 (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)  =" 1 1 nil)))
 
 
 ;; Go to line (with Feedback)
@@ -85,3 +89,11 @@
 (global-set-key (kbd "s-d") 'mc/mark-next-like-this)
 (global-set-key (kbd "s-D") 'mc/mark-previous-like-this)
 (global-set-key (kbd "M-D") 'mc/mark-all-like-this)
+
+(global-set-key (kbd "C-c a m") 'mu4e)
+
+(define-key mu4e-main-mode-map (kbd "g") 'mu4e-update-mail-and-index)
+
+(define-key mu4e-main-mode-map "s" 'helm-mu)
+(define-key mu4e-headers-mode-map "s" 'helm-mu)
+(define-key mu4e-view-mode-map "s" 'helm-mu)

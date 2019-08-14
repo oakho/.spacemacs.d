@@ -78,6 +78,11 @@ values."
      import-js
      docker
      web-beautify
+     (mu4e :variables
+           mu4e-enable-notifications t
+           mu4e-enable-async-operations t
+           mu4e-use-maildirs-extension t
+           mu4e-enable-mode-line t)
      (lsp :variables
           css-enable-lsp t
           scss-enable-lsp t
@@ -367,7 +372,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -471,6 +476,110 @@ layers configuration. You are free to put any user code."
 
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
+
+  ;; (setq mu4e-maildir "~/.Mail")
+
+  ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+  ;; allow for updating mail using 'U' in the main view:
+  ;; (setq mu4e-get-mail-command "offlineimap")
+
+  ;; shortcuts
+  (setq mu4e-maildir-shortcuts
+         '(("/INBOX" . ?i)
+           ("/[Gmail].Trash" . ?t)
+           ("/[Gmail].Drafts" . ?D)
+           ("/[Gmail].Important" . ?i)
+           ("/[Gmail].Sent Mail" . ?s)
+           ("/[Gmail].Starred" . ?S)))
+
+  ;;location of my maildir
+  (setq mu4e-maildir (expand-file-name "~/Maildir"))
+
+  ;;command used to get mail
+  ;; use this for testing
+  ;; (setq mu4e-get-mail-command "true")
+  ;; use this to sync with mbsync
+  (setq mu4e-get-mail-command "mbsync -a")
+
+  ;;rename files when moving
+  ;;NEEDED FOR MBSYNC
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; Set up some common mu4e variables
+  (setq mu4e-maildir "~/Maildir"
+        mu4e-trash-folder "/[Gmail].Trash"
+        mu4e-refile-folder "/[Gmail].Archive"
+        mu4e-drafts-folder "/[Gmail].Drafts"
+        mu4e-sent-folder "/[Gmail].Sent Mail"
+        mu4e-get-mail-command "mbsync -a"
+        ;; mu4e-get-mail-command "offlineimap"
+        mu4e-update-interval nil
+        mu4e-compose-signature-auto-include nil
+        mu4e-view-show-images t
+        mu4e-view-show-addresses t)
+
+  ;; Bookmarks
+  (setq mu4e-bookmarks
+        `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+          ("date:today..now" "Today's messages" ?t)
+          ("date:7d..now" "Last 7 days" ?w)
+          ("mime:image/*" "Messages with images" ?p)
+          (,(mapconcat 'identity
+                       (mapcar
+                        (lambda (maildir)
+                          (concat "maildir:" (car maildir)))
+                        mu4e-maildir-shortcuts) " OR ")
+           "All inboxes" ?i)))
+
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        smtpmail-queue-mail nil
+        smtpmail-queue-dir "~/Maildir/queue/cur"
+        send-mail-function 'smtpmail-send-it
+        message-send-mail-function 'smtpmail-send-it
+        mu4e-sent-messages-behavior 'delete
+        mail-envelope-from 'header
+        mail-user-agent 'mu4e-user-agent
+        smtpmail-debug-info t
+        smtpmail-debug-verb t)
+
+
+  (with-eval-after-load 'mu4e-alert
+    (mu4e-alert-set-default-style 'notifier))   ; For Mac OSX (through the terminal notifier app)
+
+  ;; show images
+  (setq mu4e-show-images t)
+
+  ;; use imagemagick, if available
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+
+  ;; convert html emails properly
+  ;; Possible options:
+  ;;   - html2text -utf8 -width 72
+  ;;   - textutil -stdin -format html -convert txt -stdout
+  ;;   - html2markdown | grep -v '&nbsp_place_holder;' (Requires html2text pypi)
+  ;;   - w3m -dump -cols 80 -T text/html
+  ;;   - view in browser (provided below)
+  (setq mu4e-html2text-command "textutil -stdin -format html -convert txt -stdout")
+
+  ;; spell check
+  (add-hook 'mu4e-compose-mode-hook
+            (lambda ()
+              "My settings for message composition."
+              (set-fill-column 72)
+              (flyspell-mode)))
+
+  (setq user-mail-address "antoine.lagadec@idol.io"
+        user-full-name  "Antoine Lagadec"
+        mu4e-compose-signature
+        (concat
+         "Cheers,\nAntoine"
+         "Merci,\nAntoine"))
+
+  (setq mu4e-update-interval (* 60 5))
+  (setq mu4e-confirm-quit nil)
 
   (setq projectile-completion-system 'helm))
 

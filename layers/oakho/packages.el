@@ -23,8 +23,8 @@
         projectile
         web-mode
         emmet-mode
-        key-chord
-        crux))
+        crux
+        embrace))
 
 ;; List of packages to exclude.
 (setq oakho-excluded-packages '())
@@ -204,8 +204,13 @@ That is, a string used to represent it on the tab bar."
       (crux-with-region-or-buffer indent-region)
       (crux-with-region-or-buffer untabify)
       (crux-with-region-or-line comment-or-uncomment-region))))
-;;
-;;
+
+;; Embrace
+(defun oakho/init-embrace ()
+  "Hooks for embrace"
+  (use-package embrace
+    :config))
+
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
 ;; https://github.com/jwiegley/use-package
