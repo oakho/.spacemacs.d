@@ -41,7 +41,7 @@
 
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-r") 'align-regexp)
 (define-key oakho-minor-mode-map (kbd "C-c C-a C-a") (lambda () (interactive)
-                                                       (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)=" 1 1 nil)))
+																											 (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)=" 1 1 nil)))
 ;; (key-chord-define-global "AA" 'align-regexp)
 ;; (key-chord-define-global "aa" (lambda () (interactive)
 ;;                                 (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)  =" 1 1 nil)))
@@ -78,9 +78,9 @@
 (global-set-key (kbd "s-n") 'make-frame)
 (global-set-key (kbd "s-z") 'undo-tree-undo)
 (global-set-key (kbd "s-s")
-                (lambda ()
-                  (interactive)
-                  (call-interactively (key-binding "\C-x\C-s"))))
+								(lambda ()
+									(interactive)
+									(call-interactively (key-binding "\C-x\C-s"))))
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
 (global-set-key (kbd "C-s-f") 'spacemacs/toggle-frame-fullscreen)
 ;; Emacs sometimes registers C-s-f as this weird keycode
@@ -90,10 +90,10 @@
 (global-set-key (kbd "s-D") 'mc/mark-previous-like-this)
 (global-set-key (kbd "M-D") 'mc/mark-all-like-this)
 
-(global-set-key (kbd "C-c a m") 'mu4e)
+;; (global-set-key (kbd "C-c a m") 'mu4e)
 
-(define-key mu4e-main-mode-map (kbd "g") 'mu4e-update-mail-and-index)
+;; (define-key mu4e-main-mode-map (kbd "g") 'mu4e-update-mail-and-index)
 
-(define-key mu4e-main-mode-map "s" 'helm-mu)
-(define-key mu4e-headers-mode-map "s" 'helm-mu)
-(define-key mu4e-view-mode-map "s" 'helm-mu)
+;; (define-key mu4e-main-mode-map "s" 'helm-mu)
+;; (define-key mu4e-headers-mode-map "s" 'helm-mu)
+;; (define-key mu4e-view-mode-map "s" 'helm-mu)

@@ -24,10 +24,17 @@
         web-mode
         emmet-mode
         crux
+        helm-ack
         embrace))
 
 ;; List of packages to exclude.
 (setq oakho-excluded-packages '())
+
+(defun oakho/init-helm-ack ()
+  (use-package helm-ack
+    :config
+    (progn)))
+
 
 ;; Company
 (defun oakho/pre-init-company ()
@@ -48,8 +55,8 @@
       (define-key oakho-minor-mode-map (kbd "C-x C-f") 'helm-find-files)
       (define-key oakho-minor-mode-map (kbd "C-x C-g") 'helm-mini)
       (define-key oakho-minor-mode-map (kbd "C-x C-b") 'helm-buffers-list)
-      (define-key oakho-minor-mode-map (kbd "s-F") 'helm-projectile-ag)
-      (define-key oakho-minor-mode-map (kbd "s-p") 'helm-projectile-find-file)
+      (define-key oakho-minor-mode-map (kbd "s-F") 'spacemacs/helm-project-smart-do-search)
+      (define-key oakho-minor-mode-map (kbd "s-p") 'helm-browse-project)
 
       (setq helm-recentf-fuzzy-match t)
       (setq helm-buffers-fuzzy-matching t)
